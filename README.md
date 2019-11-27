@@ -1,0 +1,2 @@
+# fuzzcoin-libfuzzer
+fuzzcoin-libfuzzer
