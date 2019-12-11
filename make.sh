@@ -4,6 +4,8 @@ if [ $# -gt 0 ]; then
 	N="$1"
 fi
 
+echo using $N cores...
+
 mkdir build
 cd build
 cmake -G "Unix Makefiles" \
