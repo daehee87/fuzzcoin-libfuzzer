@@ -13,6 +13,8 @@
 
 #include "FuzzerDefs.h"
 
+shit
+
 namespace fuzzer {
 
 struct FuzzingOptions {
