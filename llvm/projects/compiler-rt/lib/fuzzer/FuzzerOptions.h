@@ -46,6 +46,7 @@ struct FuzzingOptions {
   std::string ExitOnSrcPos;
   std::string ExitOnItem;
 #ifdef FUZZCOIN
+//test
   std::string CurrentInputPath = ".cur_input";  // same as AFL
   std::string CurrentCoverageDir = "features";  // tmp dir to dump out the feature as we want
   std::string CheckerScriptPath = "./checker.py"; // coverage expansion checker
