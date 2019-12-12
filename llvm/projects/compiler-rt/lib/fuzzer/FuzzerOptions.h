@@ -13,8 +13,6 @@
 
 #include "FuzzerDefs.h"
 
-pebis
-
 namespace fuzzer {
 
 struct FuzzingOptions {
