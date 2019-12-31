@@ -442,7 +442,7 @@ bool Fuzzer::RunOne(const uint8_t *Data, size_t Size, bool MayDeleteFile,
 
 #ifdef FUZZCOIN
   // Dump initial InlineCounterMaps for coverage verification
-  if(TotalNumberOfRuns == 1){    // coverage check with `-runs=1`
+  if(TotalNumberOfRuns < 3){    // for coverage check
     TPC.DumpCoveragesToFile(Options);
   }
 #endif
