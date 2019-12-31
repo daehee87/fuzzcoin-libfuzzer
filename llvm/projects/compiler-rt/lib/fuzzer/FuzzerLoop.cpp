@@ -442,7 +442,7 @@ bool Fuzzer::RunOne(const uint8_t *Data, size_t Size, bool MayDeleteFile,
 
 #ifdef FUZZCOIN
   // Dump initial InlineCounterMaps for coverage verification
-  if(TotalNumberOfRuns < 3){    // 3 is based on testing on clang 6.0.0
+  if(TotalNumberOfRuns == 1){    // coverage check with `-runs=1`
     TPC.DumpCoveragesToFile(Options);
   }
 #endif
@@ -671,7 +671,6 @@ void Fuzzer::TryDetectingAMemoryLeak(const uint8_t *Data, size_t Size,
 
 void Fuzzer::MutateAndTestOne() {
   MD.StartMutationSequence();
-
   auto &II = Corpus.ChooseUnitToMutate(MD.GetRand());
   if (Options.UseFeatureFrequency)
     Corpus.UpdateFeatureFrequencyScore(&II);
@@ -693,11 +692,21 @@ void Fuzzer::MutateAndTestOne() {
       break;
     MaybeExitGracefully();
     size_t NewSize = 0;
+
+#ifdef FUZZCOIN
+    // avoid mutation for initial runs (for coverage check)
+    if (TotalNumberOfRuns > 3) {
+#endif
+
     NewSize = MD.Mutate(CurrentUnitData, Size, CurrentMaxMutationLen);
     assert(NewSize > 0 && "Mutator returned empty unit");
     assert(NewSize <= CurrentMaxMutationLen && "Mutator return oversized unit");
     Size = NewSize;
     II.NumExecutedMutations++;
+
+#ifdef FUZZCOIN
+    }
+#endif
 
     bool FoundUniqFeatures = false;
     bool NewCov = RunOne(CurrentUnitData, Size, /*MayDeleteFile=*/true, &II,
