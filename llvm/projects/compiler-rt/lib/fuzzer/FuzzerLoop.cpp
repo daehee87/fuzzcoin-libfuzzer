@@ -714,8 +714,19 @@ void Fuzzer::MutateAndTestOne() {
     TryDetectingAMemoryLeak(CurrentUnitData, Size,
                             /*DuringInitialCorpusExecution*/ false);
     if (NewCov) {
-      ReportNewCoverage(&II, {CurrentUnitData, CurrentUnitData + Size});
-      break;  // We will mutate this input more in the next rounds.
+
+#ifdef FUZZCOIN
+    // avoid corpus update for initial runs (for coverage check)
+    if (TotalNumberOfRuns > 3) {
+#endif
+
+        ReportNewCoverage(&II, {CurrentUnitData, CurrentUnitData + Size});
+
+#ifdef FUZZCOIN
+    }
+#endif
+
+    break;  // We will mutate this input more in the next rounds.
     }
     if (Options.ReduceDepth && !FoundUniqFeatures)
         break;
